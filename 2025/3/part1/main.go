@@ -6,20 +6,6 @@ import (
 	"os"
 )
 
-func findMaxi(s string, num *int64,index *int){
-
-	maxi := int64(0)
-
-	for i:=0;i<len(s);i++ {
-		if maxi < int64(s[i]-'0') {
-			maxi = int64(s[i]-'0')
-			*index = i
-		}
-	}
-
-	*num = (*num)*10 + maxi
-}
-
 func main(){
 
 	file, err := os.Open("input.txt")
@@ -34,24 +20,30 @@ func main(){
 
 	scanner := bufio.NewScanner(file)
 
-	count := int64(0)
+	count := 0
 
 	for scanner.Scan(){
 		line := scanner.Text()	
-		num := int64(0)
+		
+		maxi:= 0
+		maxi2 := 0
 
-		index := 0
+		index:=0
 
-		start :=0
-
-		n:= len(line)
-
-		for i:=range 12{
-			findMaxi(line[start:n-11+i],&num,&index)
-			start += index+1
+		for i:=0;i<len(line)-1;i++{
+			if int(line[i]-'0') > maxi {
+				index = i
+				maxi = int(line[i]-'0') 
+			}
 		}
 
-		count += num
+		for i:=index+1;i<len(line);i++{
+			if int(line[i]-'0') > maxi2 {
+				maxi2 = int(line[i]-'0') 
+			}
+		}
+
+		count += maxi*10 + maxi2
 		
 	}
 	fmt.Println("Count is : ",count)
